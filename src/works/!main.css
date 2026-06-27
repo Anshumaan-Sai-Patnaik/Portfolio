@@ -67,7 +67,8 @@
 }
 
 .workdetail__close-arrow {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -201,8 +202,9 @@
   top: 50%;
   transform: translateY(-50%);
   z-index: 5;
-  width: 46px;
-  height: 46px;
+  /* Scale with the viewport: smaller on phones, capped at 46px on desktop. */
+  width: clamp(32px, 8.5vw, 46px);
+  height: clamp(32px, 8.5vw, 46px);
   border-radius: 50%;
   border: 1px solid var(--text);
   background: var(--bg);
@@ -210,11 +212,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
   cursor: pointer;
   box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.35);
   transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Arrow glyph scales with the button. */
+.workdetail__nav svg {
+  width: clamp(12px, 3.2vw, 17px);
+  height: auto;
 }
 
 .workdetail__nav:hover {
@@ -369,6 +376,28 @@
   margin-top: 1.25rem;
 }
 
+/* Source + live share a row as equal halves. Tighter padding lets both fit
+   the narrow aside; they only wrap to stacked on genuinely tiny widths. */
+.workdetail__actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.workdetail__actions-row > a {
+  flex: 1 1 7.5rem;
+  width: auto;
+  min-width: 0;
+  white-space: nowrap;
+  padding-left: 0.7rem;
+  padding-right: 0.7rem;
+}
+
+/* Keeps the SVG arrows crisp and centered next to the label. */
+.workdetail__btn-icon {
+  flex-shrink: 0;
+}
+
 /* Shared rectangular button base for all actions. */
 .workdetail__report,
 .workdetail__download,
@@ -509,6 +538,92 @@
   width: 100%;
   border: none;
   background: #525659; /* native PDF viewer backdrop */
+}
+
+/* ---- Image zoom (lightbox) ---- */
+
+.imgzoom {
+  position: fixed;
+  inset: 0;
+  z-index: 320;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1.25rem, 5vw, 3.5rem);
+  background: rgba(26, 26, 26, 0.82);
+  backdrop-filter: blur(4px);
+  animation: pdfviewer-in 0.3s ease;
+  cursor: zoom-out;
+}
+
+.imgzoom__figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.85rem, 2.5vw, 1.25rem);
+  max-width: 100%;
+  max-height: 100%;
+  cursor: default;
+  animation: pdfviewer-panel-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.imgzoom__img {
+  display: block;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.6);
+}
+
+.imgzoom__caption {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 60ch;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: #fff;
+  text-align: center;
+}
+
+.imgzoom__caption-num {
+  opacity: 0.6;
+}
+
+.imgzoom__close {
+  position: absolute;
+  top: clamp(0.8rem, 3vw, 1.6rem);
+  right: clamp(0.8rem, 3vw, 1.6rem);
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(245, 240, 235, 0.4);
+  background: none;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.imgzoom__close:hover {
+  background: rgba(245, 240, 235, 0.14);
+  border-color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imgzoom,
+  .imgzoom__figure {
+    animation: none;
+  }
 }
 
 /* ========================================

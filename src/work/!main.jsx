@@ -148,7 +148,11 @@ function Work() {
                 <span className="works__blurb">{work.blurb}</span>
                 <span className="works__more">
                   Know more
-                  <span className="works__more-arrow" aria-hidden="true">→</span>
+                  <span className="works__more-arrow" aria-hidden="true">
+                    <svg width="13" height="11" viewBox="0 0 15 13" fill="none">
+                      <path d="M1 6.5h12M8 1.5l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </span>
                 </span>
               </span>
             </Link>
