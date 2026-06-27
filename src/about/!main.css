@@ -1,0 +1,186 @@
+/* ========================================
+   ABOUT
+   ======================================== */
+
+.about {
+  position: relative;
+  padding: 16vh 4vw 12vh;
+  max-width: 1200px;
+}
+
+.about::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 100vw;
+  height: 1px;
+  background: rgba(26, 26, 26, 0.15);
+}
+
+.about__label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--text-light);
+  margin-bottom: 3rem;
+}
+
+.about__content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4rem;
+}
+
+/* ----------------------------------------
+   TEXT COLUMN
+   ---------------------------------------- */
+
+.about__text {
+  flex: 1;
+  max-width: 540px;
+}
+
+.about__heading {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 100;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.75rem;
+}
+
+.about__bio {
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.75;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+
+/* Lead paragraph — larger and darker to draw the eye in. */
+.about__bio:first-of-type {
+  font-size: 1.22rem;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.about__bio:last-of-type {
+  margin-bottom: 0;
+}
+
+/* Serif-italic emphasis echoes the heading within the sans body. */
+.about__bio em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.12em;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+/* ----------------------------------------
+   PORTRAIT FRAME
+   ---------------------------------------- */
+
+.about__portrait {
+  position: relative;
+  flex-shrink: 0;
+  padding-top: 1rem;
+}
+
+/* The whole frame lifts and tilts slightly on hover. */
+.about__frame {
+  display: block;
+  width: 280px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  overflow: hidden;
+  transform: perspective(900px) rotateX(0deg) rotateY(0deg);
+  box-shadow: 0 10px 30px rgba(26, 26, 26, 0.08);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about__frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.05);
+  transform: scale(1.04);
+  transition: filter 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about__frame:hover {
+  transform: perspective(900px) rotateX(2deg) rotateY(-3deg) translateY(-6px);
+  box-shadow: 0 28px 50px rgba(26, 26, 26, 0.18);
+}
+
+.about__frame:hover img {
+  filter: grayscale(0%) contrast(1);
+  transform: scale(1);
+}
+
+/* Sheen sweep across the image on hover. */
+.about__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 65%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.about__frame:hover::after {
+  transform: translateX(120%);
+}
+
+/* ----------------------------------------
+   RESPONSIVE
+   ---------------------------------------- */
+
+@media (max-width: 800px) {
+
+  .about {
+    padding: 10vh 6vw;
+  }
+
+  .about__content {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .about__text {
+    max-width: 100%;
+  }
+
+  .about__portrait {
+    padding-top: 0;
+  }
+
+  .about__frame {
+    width: 220px;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .about {
+    padding: 8vh 6vw;
+  }
+
+  .about__frame {
+    width: 180px;
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start \"\" \"d:\\\\SONU\\\\SONU DS\\\\MY PROJECTS\\\\Portfolio\\\\portfolio_v1\\\\src\\\\temp\\\\index.html\")"
+    ]
+  }
+}

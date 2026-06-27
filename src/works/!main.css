@@ -1,0 +1,594 @@
+/* ========================================
+   WORK DETAIL — full-screen view
+   ======================================== */
+
+.workdetail {
+  min-height: 100vh;
+  background: var(--bg);
+  animation: workdetail-bg 0.4s ease;
+}
+
+@keyframes workdetail-bg {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 404 / unknown slug — centred. */
+.workdetail--missing {
+  display: flex;
+  align-items: center;
+}
+
+.workdetail--missing .workdetail__report {
+  margin-top: 2rem;
+}
+
+.workdetail__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(2rem, 6vh, 4rem) clamp(1.25rem, 4vw, 4rem) 12vh;
+}
+
+/* Shared staggered entrance for the detail's blocks. */
+.workdetail__reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  animation: workdetail-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes workdetail-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Back button ---- */
+
+.workdetail__close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-light);
+  padding: 0.4rem 0;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  transition: color 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.workdetail__close:hover {
+  color: var(--text);
+}
+
+.workdetail__close-arrow {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.workdetail__close:hover .workdetail__close-arrow {
+  transform: translateX(-5px);
+}
+
+/* ---- Header ---- */
+
+.workdetail__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1rem;
+}
+
+.workdetail__dot {
+  opacity: 0.6;
+}
+
+.workdetail__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 9vw, 5rem);
+  font-weight: 100;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.75rem;
+  overflow-wrap: break-word;
+}
+
+.workdetail__stack {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.workdetail__chip {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-light);
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(26, 26, 26, 0.18);
+  transition: border-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.workdetail__chip:hover {
+  border-color: var(--text);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+/* ---- Gallery ---- */
+
+.workdetail__gallery {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  margin: clamp(2.5rem, 6vw, 3.5rem) 0 clamp(3rem, 7vw, 4.5rem);
+}
+
+/* Row 2 with 2–3 images: side by side. */
+.workdetail__row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: start;
+  gap: clamp(0.75rem, 2vw, 1rem);
+}
+
+.workdetail__shot {
+  position: relative;
+  margin: 0;
+  min-height: 180px; /* gives placeholder / loading state a box */
+  background: rgba(26, 26, 26, 0.04);
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease, border-color 0.4s ease;
+}
+
+.workdetail__shot:hover {
+  transform: translateY(-4px);
+  border-color: rgba(26, 26, 26, 0.25);
+  box-shadow: 0 18px 40px -20px rgba(26, 26, 26, 0.35);
+}
+
+/* ---- Horizontal strip (4+ images): one scrolling row ---- */
+.workdetail__strip-wrap {
+  position: relative;
+}
+
+.workdetail__strip {
+  position: relative;             /* makes child offsetLeft content-relative */
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;  /* images snap to the left edge → full visibility */
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* old Edge */
+}
+
+.workdetail__strip::-webkit-scrollbar {
+  display: none;                  /* WebKit */
+}
+
+.workdetail__shot--strip {
+  flex: 0 0 auto;
+  height: clamp(200px, 30vh, 300px);
+  min-height: 0;
+  scroll-snap-align: start;
+}
+
+.workdetail__shot--strip .workdetail__img {
+  width: auto;
+  height: 100%;                   /* fixed height, natural width — still no cropping */
+}
+
+/* Slide arrows */
+.workdetail__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--text);
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  cursor: pointer;
+  box-shadow: 0 6px 20px -6px rgba(0, 0, 0, 0.35);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.workdetail__nav:hover {
+  background: var(--text);
+  color: var(--bg);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.workdetail__nav--prev { left: 0.7rem; }
+.workdetail__nav--next { right: 0.7rem; }
+
+.workdetail__img {
+  width: 100%;
+  height: auto;        /* show the whole image at its natural ratio — no cropping */
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.workdetail__shot:hover .workdetail__img {
+  transform: scale(1.04);
+}
+
+.workdetail__placeholder {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  opacity: 0.6;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.workdetail__shot:hover .workdetail__placeholder {
+  transform: scale(1.08);
+}
+
+/* Caption — slides up over the image on hover. */
+.workdetail__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 2.4rem 1.1rem 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.workdetail__shot:hover .workdetail__caption,
+.workdetail__shot:focus-within .workdetail__caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* A strip image that's clipped by the scroller edge stays quiet on hover. */
+.workdetail__shot--strip.is-clipped:hover .workdetail__caption,
+.workdetail__shot--strip.is-clipped:focus-within .workdetail__caption {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.workdetail__shot--strip.is-clipped {
+  cursor: default;
+}
+
+.workdetail__caption-num {
+  flex-shrink: 0;
+  opacity: 0.65;
+}
+
+/* Touch devices can't hover — keep captions visible, except clipped strip items. */
+@media (hover: none) {
+  .workdetail__caption {
+    opacity: 1;
+    transform: none;
+  }
+
+  .workdetail__shot--strip.is-clipped .workdetail__caption {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+/* ---- Content ---- */
+
+.workdetail__content {
+  display: grid;
+  grid-template-columns: 1fr minmax(260px, 320px);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+
+.workdetail__subhead {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  margin-bottom: 1.25rem;
+}
+
+.workdetail__story .workdetail__subhead:not(:first-child) {
+  margin-top: 3rem;
+}
+
+.workdetail__para {
+  font-size: clamp(1rem, 2.6vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.75;
+  margin-bottom: 1.25rem;
+  max-width: 60ch;
+}
+
+.workdetail__para--muted {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+/* Serif-italic emphasis that stands out against the sans body. */
+.workdetail__em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.12em;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--text);
+}
+
+.workdetail__aside {
+  position: sticky;
+  top: clamp(2rem, 6vh, 4rem);
+  padding: 1.75rem;
+  border: 1px solid rgba(26, 26, 26, 0.15);
+  background: rgba(26, 26, 26, 0.015);
+}
+
+.workdetail__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+/* Shared rectangular button base for all actions. */
+.workdetail__report,
+.workdetail__download,
+.workdetail__live,
+.workdetail__source {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.85rem 1.4rem;
+  border: 1px solid var(--text);
+  border-radius: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Primary — filled. */
+.workdetail__report {
+  background: var(--text);
+  color: var(--bg);
+  will-change: transform;
+}
+
+.workdetail__report:hover {
+  background: transparent;
+  color: var(--text);
+}
+
+/* Secondary — outlined. */
+.workdetail__download,
+.workdetail__live,
+.workdetail__source {
+  background: none;
+  color: var(--text);
+  border-color: rgba(26, 26, 26, 0.3);
+}
+
+.workdetail__download:hover,
+.workdetail__live:hover,
+.workdetail__source:hover {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+/* ---- Inline PDF viewer ---- */
+
+.pdfviewer {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  background: rgba(26, 26, 26, 0.55);
+  backdrop-filter: blur(4px);
+  animation: pdfviewer-in 0.3s ease;
+  /* Inset from the screen edges on larger screens. */
+  padding: clamp(1.5rem, 5vh, 4rem) clamp(1.5rem, 6vw, 6rem);
+}
+
+@keyframes pdfviewer-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.pdfviewer__panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--bg);
+  overflow: hidden;
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.5);
+  animation: pdfviewer-panel-in 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes pdfviewer-panel-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pdfviewer__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem clamp(1rem, 3vw, 2rem);
+  background: var(--bg);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.12);
+}
+
+.pdfviewer__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 100;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdfviewer__bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.pdfviewer__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid rgba(26, 26, 26, 0.2);
+  border-radius: 0;
+  background: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pdfviewer__action:hover {
+  background: var(--text);
+  border-color: var(--text);
+  color: var(--bg);
+}
+
+.pdfviewer__frame {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: #525659; /* native PDF viewer backdrop */
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Collapse to a single column. */
+@media (max-width: 760px) {
+
+  .workdetail__row {
+    grid-template-columns: 1fr;
+  }
+
+  .workdetail__content {
+    grid-template-columns: 1fr;
+  }
+
+  .workdetail__aside {
+    position: static;
+  }
+
+  /* Full-screen viewer on small screens — no inset. */
+  .pdfviewer {
+    padding: 0;
+  }
+
+  .pdfviewer__panel {
+    max-width: none;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 460px) {
+
+  .workdetail__close {
+    margin-bottom: 2rem;
+  }
+
+  .workdetail__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.9rem;
+  }
+
+  .workdetail__report {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .workdetail__download {
+    justify-content: center;
+  }
+}
+
+/* ---- Motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .workdetail,
+  .workdetail__reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .workdetail__shot,
+  .workdetail__chip,
+  .workdetail__close-arrow,
+  .workdetail__placeholder,
+  .workdetail__caption,
+  .workdetail__nav,
+  .workdetail__img {
+    transition: none;
+  }
+
+  .workdetail__shot:hover,
+  .workdetail__shot:hover .workdetail__img {
+    transform: none;
+  }
+
+  .workdetail__strip {
+    scroll-behavior: auto;
+  }
+}

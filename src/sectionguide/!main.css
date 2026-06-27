@@ -1,0 +1,284 @@
+/* ========================================
+   SECTION GUIDE
+   Rail + on-screen transition sweep + ticker.
+   All ink-on-paper, tuned to the site palette.
+   ======================================== */
+
+/* ----------------------------------------
+   TRANSITION SWEEP — fires on section change
+   ---------------------------------------- */
+
+.sxn-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 150;          /* above content, below navbar (300) & menu (200) */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Hairline that draws across the viewport at eye level. */
+.sxn-flash__line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  margin-top: -0.5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(26, 26, 26, 0.42) 18%,
+    rgba(26, 26, 26, 0.42) 82%,
+    transparent
+  );
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+.sxn-flash__line--down {
+  transform-origin: left center;
+  animation: sxn-sweep 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.sxn-flash__line--up {
+  transform-origin: right center;
+  animation: sxn-sweep 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes sxn-sweep {
+  0%   { transform: scaleX(0); opacity: 0; }
+  30%  { opacity: 1; }
+  55%  { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1); opacity: 0; }
+}
+
+/* A small ink node that rides along the line with a soft warm glow. */
+.sxn-flash__node {
+  position: absolute;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 0 16px 3px rgba(26, 26, 26, 0.22);
+  opacity: 0;
+}
+
+.sxn-flash__node--down {
+  animation: sxn-node-down 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.sxn-flash__node--up {
+  animation: sxn-node-up 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes sxn-node-down {
+  0%   { left: 0;    opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+@keyframes sxn-node-up {
+  0%   { left: 100%; opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: 0;    opacity: 0; }
+}
+
+/* ----------------------------------------
+   RAIL — vertical progress + nav dots
+   ---------------------------------------- */
+
+.sxn-rail {
+  position: fixed;
+  left: clamp(0.85rem, 2vw, 1.7rem);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 120;
+}
+
+.sxn-rail__nodes {
+  position: relative;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2.3vh, 1.6rem);
+}
+
+/* The faint full-height track behind the dots. */
+.sxn-rail__nodes::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: rgba(26, 26, 26, 0.16);
+}
+
+/* The inked fill — scaled by scroll progress from JS. */
+.sxn-rail__fill {
+  position: absolute;
+  left: 4px;
+  top: 6px;
+  bottom: 6px;
+  width: 1px;
+  background: var(--text);
+  transform: scaleY(0);
+  transform-origin: top center;
+  transition: transform 0.12s linear;
+}
+
+.sxn-node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sxn-node__dot {
+  position: relative;
+  z-index: 1;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(26, 26, 26, 0.4);
+  background: var(--bg);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.sxn-node:hover .sxn-node__dot {
+  border-color: var(--text);
+  transform: scale(1.15);
+}
+
+.sxn-node--active .sxn-node__dot {
+  background: var(--text);
+  border-color: var(--text);
+  transform: scale(1.3);
+  box-shadow: 0 0 0 4px rgba(26, 26, 26, 0.08);
+}
+
+/* Label pill — hidden until hover/focus, carries its own paper backdrop
+   so it stays legible over any content it floats above. */
+.sxn-node__label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+  padding: 0.25rem 0.6rem;
+  background: var(--bg);
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  border-radius: 2px;
+  box-shadow: 0 6px 20px -12px rgba(26, 26, 26, 0.4);
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sxn-node:hover .sxn-node__label,
+.sxn-node:focus-visible .sxn-node__label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sxn-node__index {
+  color: var(--text-light);
+}
+
+/* ----------------------------------------
+   TICKER — current section, rolls on change
+   ---------------------------------------- */
+
+.sxn-tag {
+  position: fixed;
+  left: clamp(0.85rem, 2vw, 1.7rem);
+  bottom: clamp(1rem, 3.5vh, 2.2rem);
+  z-index: 120;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.sxn-tag__slash {
+  opacity: 0.5;
+}
+
+.sxn-tag__roll {
+  position: relative;
+  overflow: hidden;
+  height: 1.1em;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sxn-tag__word {
+  display: inline-block;
+  color: var(--text);
+  animation: sxn-roll 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes sxn-roll {
+  from { transform: translateY(110%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ----------------------------------------
+   RESPONSIVE — step back on smaller screens
+   ---------------------------------------- */
+
+/* The rail and ticker share the left edge with the hero/section content;
+   below this width that margin gets tight, so retire them. */
+@media (max-width: 900px) {
+  .sxn-rail,
+  .sxn-tag {
+    display: none;
+  }
+}
+
+/* ----------------------------------------
+   MOTION SAFETY
+   ---------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .sxn-flash {
+    display: none;
+  }
+
+  .sxn-rail__fill {
+    transition: none;
+  }
+
+  .sxn-node__dot,
+  .sxn-node__label {
+    transition: none;
+  }
+
+  .sxn-tag__word {
+    animation: none;
+  }
+}

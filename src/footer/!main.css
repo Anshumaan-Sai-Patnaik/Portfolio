@@ -1,0 +1,99 @@
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.footer {
+  position: relative;
+  z-index: 1;
+  background-color: var(--text);
+  color: var(--bg);
+  padding: 8vh 4vw 3vh;
+}
+
+.footer__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.footer__statement {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  font-weight: 100;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  max-width: 11ch;
+}
+
+.footer__meta {
+  display: flex;
+  gap: 4rem;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  list-style: none;
+}
+
+.footer__links a {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--bg);
+  opacity: 0.75;
+  transition: opacity 0.3s ease;
+}
+
+.footer__links a:hover {
+  opacity: 1;
+}
+
+.footer__divider {
+  height: 1px;
+  background-color: rgba(245, 240, 235, 0.2);
+  margin: 6vh 0 2rem;
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer__copy {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bg);
+  opacity: 0.7;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 800px) {
+
+  .footer {
+    padding: 7vh 6vw 3vh;
+  }
+
+  .footer__top {
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .footer__meta {
+    gap: 3rem;
+  }
+
+  .footer__divider {
+    margin: 4vh 0 2rem;
+  }
+}

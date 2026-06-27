@@ -1,0 +1,408 @@
+/* ========================================
+   SELECTED WORK — TIMELINE
+   ======================================== */
+
+.works {
+  position: relative;
+  padding: 12vh clamp(1.25rem, 4vw, 4rem);
+  max-width: 1200px;
+  /* Left-aligned like every other section so the content stays clear of the
+     fixed gutter (left: 1200px); centering would overlap it and swallow the
+     gutter's hover/spotlight pointer events. */
+}
+
+.works::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 100vw;
+  height: 1px;
+  background: rgba(26, 26, 26, 0.15);
+}
+
+.works__label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+}
+
+/* ---- All / Chosen toggle ---- */
+
+.works__tabs {
+  display: flex;
+  gap: 1.75rem;
+  margin-bottom: clamp(2rem, 5vw, 2.75rem);
+}
+
+.works__tab {
+  position: relative;
+  background: none;
+  border: none;
+  padding: 0 0 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--text-light);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: color 0.3s ease, opacity 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.works__tab:hover,
+.works__tab--active {
+  opacity: 1;
+  color: var(--text);
+}
+
+/* Thin underline under the active tab — own layer keeps it a crisp 1px. */
+.works__tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--text);
+  transform: scaleX(0) translateZ(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.works__tab--active::after {
+  transform: scaleX(1) translateZ(0);
+}
+
+.works__statement {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 5vw, 3.6rem);
+  font-weight: 100;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 900px;
+  margin-bottom: 1.75rem;
+}
+
+.works__text {
+  font-size: clamp(1rem, 2.4vw, 1.1rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-light);
+  max-width: 560px;
+  margin-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+
+/* ---- Timeline ---- */
+
+.works__timeline {
+  list-style: none;
+  position: relative;
+  margin-left: 0.5rem;
+}
+
+/* The spine: a line that draws itself down on reveal. */
+.works__timeline::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1px;
+  background: rgba(26, 26, 26, 0.15);
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+/* Draw the spine once any entry scrolls into view. */
+.works__timeline:has(.revealed)::before {
+  transform: scaleY(1);
+}
+
+.works__item {
+  position: relative;
+}
+
+.works__entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.5rem 5rem 1fr;
+  gap: clamp(1rem, 3vw, 2rem);
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+  padding: clamp(1.75rem, 4vw, 2.5rem) 0 clamp(1.75rem, 4vw, 2.5rem) clamp(1.5rem, 3vw, 2.5rem);
+  cursor: pointer;
+  color: var(--text);
+  font-family: inherit;
+  transition: padding-left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Hover wash that sweeps in from the left. */
+.works__entry::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(26, 26, 26, 0.04), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.works__entry:hover::after,
+.works__entry:focus-visible::after {
+  opacity: 1;
+}
+
+/* The node on the spine. */
+.works__entry::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: clamp(2.1rem, 4.5vw, 3rem);
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1px solid var(--text-light);
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.works__entry:hover,
+.works__entry:focus-visible {
+  padding-left: clamp(2rem, 3.5vw, 3.25rem);
+}
+
+.works__entry:hover::before,
+.works__entry:focus-visible::before {
+  background: var(--text);
+  border-color: var(--text);
+  transform: scale(1.4);
+}
+
+.works__entry:focus-visible {
+  outline: none;
+}
+
+.works__index {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-light);
+  padding-top: 0.4rem;
+  opacity: 0.5;
+  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.works__entry:hover .works__index,
+.works__entry:focus-visible .works__index {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.works__year {
+  font-family: var(--font-mono);
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  color: var(--text-light);
+  padding-top: 0.35rem;
+}
+
+.works__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.works__category {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.works__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 5.5vw, 2.4rem);
+  font-weight: 100;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.works__entry:hover .works__title,
+.works__entry:focus-visible .works__title {
+  transform: translateX(4px);
+}
+
+.works__blurb {
+  font-size: clamp(0.92rem, 2.6vw, 1rem);
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--text-light);
+  max-width: 540px;
+}
+
+.works__more {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+/* Animated underline under "Know more". The hairline gets its own
+   compositing layer (translateZ) so it always rasterises as a crisp 1px
+   instead of antialiasing thicker at certain row positions on scaled displays. */
+.works__more::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: var(--text);
+  transform: scaleX(0) translateZ(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.works__entry:hover .works__more::before,
+.works__entry:focus-visible .works__more::before {
+  transform: scaleX(1) translateZ(0);
+}
+
+.works__more-arrow {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.works__entry:hover .works__more-arrow,
+.works__entry:focus-visible .works__more-arrow {
+  transform: translateX(5px);
+}
+
+/* ----------------------------------------
+   HOVER PREVIEW — first image trails the cursor
+   ---------------------------------------- */
+
+.works__preview {
+  --pw: clamp(220px, 24vw, 320px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 120;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+
+.works__preview--on {
+  opacity: 1;
+}
+
+.works__preview img {
+  display: block;
+  width: var(--pw);
+  height: auto;            /* keep the image's natural ratio — no cropping */
+  border-radius: 6px;
+  box-shadow: 0 24px 60px -20px rgba(26, 26, 26, 0.5);
+  /* translate centres the image on the cursor point; scale runs the reveal. */
+  transform: translate(-50%, -50%) scale(0.92);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.works__preview--on img {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* No cursor to trail on touch devices. */
+@media (hover: none) {
+  .works__preview {
+    display: none;
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Tablet: drop the index column, keep year + body. */
+@media (max-width: 680px) {
+
+  .works {
+    padding: 10vh 6vw;
+  }
+
+  .works__text {
+    max-width: 100%;
+  }
+
+  .works__entry {
+    grid-template-columns: 4rem 1fr;
+  }
+
+  .works__index {
+    display: none;
+  }
+}
+
+/* Phone: stack year above the body. */
+@media (max-width: 460px) {
+
+  .works__timeline {
+    margin-left: 0;
+  }
+
+  .works__entry {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    padding-left: 1.5rem;
+  }
+
+  .works__entry:hover,
+  .works__entry:focus-visible {
+    padding-left: 1.9rem;
+  }
+
+  .works__entry::before {
+    top: clamp(1.6rem, 7vw, 2rem);
+  }
+
+  .works__year {
+    padding-top: 0;
+    order: -1;
+  }
+}
+
+/* ---- Motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .works__timeline::before {
+    transform: scaleY(1);
+    transition: none;
+  }
+
+  .works__entry,
+  .works__entry::before,
+  .works__title,
+  .works__index,
+  .works__more::before,
+  .works__more-arrow,
+  .works__tab,
+  .works__tab::after,
+  .works__preview img {
+    transition: none;
+  }
+}

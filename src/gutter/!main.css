@@ -1,0 +1,74 @@
+.gutter {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 1200px;
+  right: 0;
+  min-width: 200px;
+  z-index: 0;
+  background: #1a1a1a;
+  color: rgba(245, 240, 235, 0.08);
+  padding: 0 1.5rem;
+  font-size: 0.75rem;
+  line-height: 1.8;
+  overflow: hidden;
+  word-break: break-all;
+
+  /* Spotlight position, updated from JS on pointer move. */
+  --mx: 50%;
+  --my: 50%;
+}
+
+@media (max-width: 1400px) {
+  .gutter {
+    display: none;
+  }
+}
+
+.gutter:hover {
+  color: rgba(245, 240, 235, 0.14);
+}
+
+.gutter__track {
+  will-change: transform;
+  transition: color 0.4s ease;
+}
+
+/* ----------------------------------------
+   CURSOR SPOTLIGHT
+   ---------------------------------------- */
+
+/* Stationary spotlight: the mask sits on this wrapper (which never moves), so
+   the lit circle stays pinned at the cursor while the bright text scrolls
+   through it. Aligns with the gutter's own padding so the text lines up. */
+.gutter__glow {
+  position: absolute;
+  inset: 0;
+  padding: 0 1.5rem;
+  pointer-events: none;
+  opacity: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease;
+
+  -webkit-mask-image: radial-gradient(
+    circle 130px at var(--mx) var(--my),
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 75%
+  );
+  mask-image: radial-gradient(
+    circle 130px at var(--mx) var(--my),
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 75%
+  );
+}
+
+.gutter--lit .gutter__glow {
+  opacity: 1;
+}
+
+/* Bright duplicate of the marquee, scrolled in sync with the dim track. */
+.gutter__track--glow {
+  color: rgba(245, 240, 235, 0.85);
+}

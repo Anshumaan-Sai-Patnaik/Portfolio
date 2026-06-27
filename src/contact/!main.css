@@ -1,0 +1,370 @@
+/* ========================================
+   CONTACT
+   ======================================== */
+
+.contact {
+  position: relative;
+  padding: 16vh 4vw 14vh;
+  max-width: 1200px;
+}
+
+.contact::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  translate: -50% 0;
+  width: 100vw;
+  height: 1px;
+  background: rgba(26, 26, 26, 0.15);
+}
+
+.contact__label {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--text-light);
+  margin-bottom: 3rem;
+}
+
+/* ----------------------------------------
+   GRID
+   ---------------------------------------- */
+
+.contact__grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.contact__left {
+  flex: 1;
+  max-width: 480px;
+}
+
+/* ----------------------------------------
+   HEADING
+   ---------------------------------------- */
+
+.contact__heading {
+  font-family: var(--font-serif);
+  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  font-weight: 100;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 3rem;
+}
+
+/* ----------------------------------------
+   INFO BLOCKS
+   ---------------------------------------- */
+
+.contact__block {
+  margin-bottom: 2rem;
+}
+
+.contact__tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  border: 1px solid var(--text);
+  border-radius: 3px;
+  padding: 0.5em 1em;
+  margin-bottom: 0.6rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+a.contact__tag:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.contact__link {
+  display: block;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-light);
+  transition: color 0.3s ease;
+}
+
+.contact__link:hover {
+  color: var(--text);
+}
+
+/* ----------------------------------------
+   FORM
+   ---------------------------------------- */
+
+.contact__form {
+  flex: 1;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.contact__field {
+  border-bottom: 1px solid rgba(26, 26, 26, 0.2);
+}
+
+.contact__field input,
+.contact__field textarea {
+  width: 100%;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1.2rem 0;
+  resize: none;
+}
+
+.contact__field input::placeholder,
+.contact__field textarea::placeholder {
+  color: var(--text-light);
+  opacity: 0.7;
+}
+
+.contact__field--textarea {
+  border-bottom: none;
+}
+
+.contact__field textarea {
+  padding-top: 1.4rem;
+  min-height: 120px;
+}
+
+/* ----------------------------------------
+   CUSTOM DROPDOWN
+   ---------------------------------------- */
+
+.contact__field--select {
+  position: relative;
+}
+
+.contact__dropdown-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-light);
+  opacity: 0.7;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1.2rem 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.contact__dropdown-value--filled {
+  color: var(--text);
+  opacity: 1;
+}
+
+.contact__dropdown-trigger:has(.contact__dropdown-value--filled) {
+  opacity: 1;
+}
+
+.contact__dropdown-arrow {
+  color: var(--text-light);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+}
+
+.contact__dropdown-arrow--open {
+  transform: rotate(180deg);
+}
+
+.contact__dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  background: var(--bg);
+  border: 1px solid rgba(26, 26, 26, 0.12);
+  list-style: none;
+  overflow: hidden;
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.contact__dropdown-menu--open {
+  opacity: 1;
+  max-height: 280px;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.contact__dropdown-item {
+  width: 100%;
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 300;
+  color: var(--text-light);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.85rem 1.1rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.contact__dropdown-item:hover {
+  background: rgba(26, 26, 26, 0.06);
+  color: var(--text);
+}
+
+.contact__dropdown-item--active {
+  color: var(--text);
+  font-weight: 400;
+}
+
+/* ----------------------------------------
+   SUBMIT BUTTON
+   ---------------------------------------- */
+
+.contact__submit {
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid rgba(26, 26, 26, 0.25);
+  border-radius: 3px;
+  padding: 0.7em 1.8em 0.7em 0.7em;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.contact__submit:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.contact__submit-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex-shrink: 0;
+  border-radius: 3px;
+  background: var(--text);
+  color: var(--bg);
+  line-height: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.contact__submit-arrow svg {
+  display: block;
+}
+
+.contact__submit:hover .contact__submit-arrow {
+  background: var(--bg);
+  color: var(--text);
+}
+
+.contact__submit:disabled {
+  cursor: progress;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ----------------------------------------
+   SUBMIT FOOTER + STATUS
+   ---------------------------------------- */
+
+.contact__footer {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.contact__status {
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.contact__status--success,
+.contact__status--error {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact__status--success {
+  color: #2e7d4f;
+}
+
+.contact__status--error {
+  color: #c0392b;
+}
+
+/* Honeypot — visually hidden but present in the DOM for bots. */
+.contact__honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 800px) {
+
+  .contact {
+    padding: 10vh 6vw 12vh;
+  }
+
+  .contact__grid {
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .contact__left {
+    max-width: 100%;
+  }
+
+  .contact__form {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .contact {
+    padding: 8vh 6vw 10vh;
+  }
+}

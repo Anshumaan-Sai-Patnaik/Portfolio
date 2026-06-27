@@ -1,0 +1,85 @@
+/* ========================================
+   HERO / TITLE
+   ======================================== */
+
+.hero {
+  height: 100vh;
+}
+
+.hero__inner {
+  position: sticky;
+  top: 0;
+  padding: 16vh 4vw 12vh;
+  max-width: 1200px;
+}
+
+.hero__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.8rem, 11vw, 8.5rem);
+  font-weight: 100;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+
+.hero__word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  margin-right: 0.25em;
+}
+
+.hero__word-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  animation: hero-word-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes hero-word-rise {
+  to {
+    transform: translateY(0);
+  }
+}
+
+.hero__desc {
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: var(--text-light);
+  line-height: 1.7;
+  max-width: clamp(540px, 36vw, 880px);
+  opacity: 0;
+  animation: hero-desc-fade 1s cubic-bezier(0.22, 1, 0.36, 1) 0.55s forwards;
+}
+
+@keyframes hero-desc-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+@media (max-width: 800px) {
+
+  .hero__inner {
+    padding: 14vh 6vw 10vh;
+  }
+
+  .hero__desc {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .hero__inner {
+    padding: 13vh 6vw 8vh;
+  }
+}
