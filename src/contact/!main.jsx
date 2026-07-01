@@ -131,7 +131,7 @@ function Contact() {
           </div>
         </div>
 
-        <form className="contact__form" onSubmit={handleSubmit} data-reveal style={{ '--reveal-delay': '0.15s' }}>
+        <form className="contact__form" onSubmit={handleSubmit} data-reveal="right" style={{ '--reveal-delay': '0.15s' }}>
           {/* Honeypot — hidden from humans, tempting to bots. */}
           <input
             type="checkbox"

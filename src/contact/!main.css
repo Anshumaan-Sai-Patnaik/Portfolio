@@ -8,6 +8,7 @@
   max-width: 1200px;
 }
 
+/* Section hairline draws itself across once the section starts revealing. */
 .contact::before {
   content: '';
   position: absolute;
@@ -17,6 +18,13 @@
   width: 100vw;
   height: 1px;
   background: rgba(26, 26, 26, 0.15);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+.contact:has(.revealed)::before {
+  transform: scaleX(1);
 }
 
 .contact__label {
@@ -107,7 +115,27 @@ a.contact__tag:hover {
 }
 
 .contact__field {
+  position: relative;
   border-bottom: 1px solid rgba(26, 26, 26, 0.2);
+}
+
+/* Focus underline draws in from the left over the resting hairline. */
+.contact__field::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--text);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.contact__field:focus-within::after {
+  transform: scaleX(1);
 }
 
 .contact__field input,
@@ -366,5 +394,18 @@ a.contact__tag:hover {
 
   .contact {
     padding: 8vh 6vw 10vh;
+  }
+}
+
+/* ---- Motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .contact::before {
+    transform: scaleX(1);
+    transition: none;
+  }
+
+  .contact__field::after {
+    transition: none;
   }
 }

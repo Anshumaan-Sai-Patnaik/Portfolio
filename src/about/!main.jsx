@@ -1,6 +1,11 @@
+import useParallax from "../hooks/useParallax";
 import "./!main.css";
 
 function About() {
+  // Own wrapper for the parallax transform — the reveal (outer) and the
+  // hover tilt (frame) each keep their own transforms.
+  const parallaxRef = useParallax(26);
+
   return (
     <section id="about" className="about">
       <p className="about__label">About</p>
@@ -16,9 +21,11 @@ function About() {
           </p>
         </div>
 
-        <div className="about__portrait" data-reveal style={{ '--reveal-delay': '0.15s' }}>
-          <div className="about__frame">
-            <img src="/about/profile.png" alt="Anshumaan Sai Patnaik" />
+        <div className="about__portrait" data-reveal="scale" style={{ '--reveal-delay': '0.15s' }}>
+          <div className="about__drift" ref={parallaxRef}>
+            <div className="about__frame">
+              <img src="/about/profile.png" alt="Anshumaan Sai Patnaik" />
+            </div>
           </div>
         </div>
       </div>

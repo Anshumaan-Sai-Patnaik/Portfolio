@@ -11,6 +11,7 @@
      gutter's hover/spotlight pointer events. */
 }
 
+/* Section hairline draws itself across once the section starts revealing. */
 .works::before {
   content: '';
   position: absolute;
@@ -20,6 +21,13 @@
   width: 100vw;
   height: 1px;
   background: rgba(26, 26, 26, 0.15);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+.works:has(.revealed)::before {
+  transform: scaleX(1);
 }
 
 .works__label {
@@ -389,6 +397,11 @@
 
 /* ---- Motion-safety ---- */
 @media (prefers-reduced-motion: reduce) {
+
+  .works::before {
+    transform: scaleX(1);
+    transition: none;
+  }
 
   .works__timeline::before {
     transform: scaleY(1);

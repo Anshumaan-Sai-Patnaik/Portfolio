@@ -3,6 +3,7 @@
    ======================================== */
 
 .hero {
+  position: relative;
   height: 100vh;
 }
 
@@ -11,6 +12,9 @@
   top: 0;
   padding: 16vh 4vw 12vh;
   max-width: 1200px;
+  /* Scroll-linked exit (JS) scales about the title's anchor, not the centre. */
+  transform-origin: left top;
+  will-change: transform, opacity;
 }
 
 .hero__title {
@@ -63,6 +67,72 @@
 }
 
 /* ========================================
+   SCROLL CUE
+   ======================================== */
+
+.hero__cue {
+  position: absolute;
+  left: 4vw;
+  bottom: 6vh;
+}
+
+.hero__cue-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: 0;
+  animation: hero-desc-fade 1s cubic-bezier(0.22, 1, 0.36, 1) 1.1s forwards;
+}
+
+.hero__cue-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+/* Hairline track with a dark segment that runs down it on loop. */
+.hero__cue-line {
+  position: relative;
+  width: 1px;
+  height: 52px;
+  background: rgba(26, 26, 26, 0.15);
+  overflow: hidden;
+}
+
+.hero__cue-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--text);
+  transform: scaleY(0);
+  transform-origin: top;
+  animation: hero-cue-run 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes hero-cue-run {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  /* Origin flips while the line is full, so there's no visible jump. */
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* ========================================
    RESPONSIVE
    ======================================== */
 
@@ -77,9 +147,39 @@
   }
 }
 
+@media (max-width: 800px) {
+
+  .hero__cue {
+    left: 6vw;
+  }
+}
+
 @media (max-width: 500px) {
 
   .hero__inner {
     padding: 13vh 6vw 8vh;
+  }
+}
+
+/* ---- Motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .hero__word-inner {
+    transform: none;
+    animation: none;
+  }
+
+  .hero__desc {
+    opacity: 1;
+    animation: none;
+  }
+
+  .hero__cue-in {
+    opacity: 1;
+    animation: none;
+  }
+
+  .hero__cue-line::after {
+    animation: none;
   }
 }

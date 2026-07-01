@@ -41,6 +41,8 @@
 }
 
 .footer__links a {
+  position: relative;
+  display: inline-block;
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.08em;
@@ -53,10 +55,43 @@
   opacity: 1;
 }
 
+/* Underline exits right, re-enters from the left on the next hover. */
+.footer__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: var(--bg);
+  transform: scaleX(0) translateZ(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footer__links a:hover::after {
+  transform: scaleX(1) translateZ(0);
+  transform-origin: left;
+}
+
+/* Divider draws across on reveal instead of fading up like the rest. */
 .footer__divider {
   height: 1px;
   background-color: rgba(245, 240, 235, 0.2);
   margin: 6vh 0 2rem;
+}
+
+.footer__divider[data-reveal] {
+  opacity: 1;
+  filter: none;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.footer__divider[data-reveal].revealed {
+  transform: scaleX(1);
 }
 
 .footer__bottom {
@@ -72,6 +107,19 @@
   text-transform: uppercase;
   color: var(--bg);
   opacity: 0.7;
+}
+
+/* ---- Motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .footer__divider[data-reveal] {
+    transform: scaleX(1);
+    transition: none;
+  }
+
+  .footer__links a::after {
+    transition: none;
+  }
 }
 
 /* ========================================

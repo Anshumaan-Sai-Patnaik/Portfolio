@@ -87,6 +87,7 @@
 }
 
 .nav__links a {
+  position: relative;
   font-size: 1rem;
   font-weight: 400;
   color: var(--text-light);
@@ -97,6 +98,25 @@
 
 .nav__links a:hover {
   color: var(--text);
+}
+
+/* Underline exits right, re-enters from the left on the next hover. */
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: var(--text);
+  transform: scaleX(0) translateZ(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav__links a:hover::after {
+  transform: scaleX(1) translateZ(0);
+  transform-origin: left;
 }
 
 .nav--pill .nav__links a {

@@ -8,6 +8,8 @@
   max-width: 1200px;
 }
 
+/* Section hairline draws itself across once the section starts revealing.
+   `translate` centres it; `transform` runs the draw — they compose. */
 .about::before {
   content: '';
   position: absolute;
@@ -17,6 +19,13 @@
   width: 100vw;
   height: 1px;
   background: rgba(26, 26, 26, 0.15);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+.about:has(.revealed)::before {
+  transform: scaleX(1);
 }
 
 .about__label {
@@ -89,6 +98,11 @@
   position: relative;
   flex-shrink: 0;
   padding-top: 1rem;
+}
+
+/* Parallax wrapper — JS-driven vertical drift as the section scrolls by. */
+.about__drift {
+  will-change: transform;
 }
 
 /* The whole frame lifts and tilts slightly on hover. */
@@ -182,5 +196,20 @@
 
   .about__frame {
     width: 180px;
+  }
+}
+
+/* ---- Motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .about::before {
+    transform: scaleX(1);
+    transition: none;
+  }
+
+  .about__frame,
+  .about__frame img,
+  .about__frame::after {
+    transition: none;
   }
 }

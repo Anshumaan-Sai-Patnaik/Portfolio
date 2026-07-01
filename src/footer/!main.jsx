@@ -11,9 +11,9 @@ function Footer() {
   return (
     <footer id="footer" className="footer">
       <div className="footer__top">
-        <h2 className="footer__statement">Built with intent</h2>
+        <h2 className="footer__statement" data-reveal>Built with intent</h2>
 
-        <div className="footer__meta">
+        <div className="footer__meta" data-reveal style={{ '--reveal-delay': '0.12s' }}>
           <ul className="footer__links">
             {links.map((link) => (
               <li key={link.label}>
@@ -29,10 +29,10 @@ function Footer() {
         </div>
       </div>
 
-      <div className="footer__divider" />
+      <div className="footer__divider" data-reveal style={{ '--reveal-delay': '0.2s' }} />
 
       <div className="footer__bottom">
-        <p className="footer__copy">2026 © Anshumaan Sai Patnaik. All rights reserved</p>
+        <p className="footer__copy" data-reveal style={{ '--reveal-delay': '0.3s' }}>2026 © Anshumaan Sai Patnaik. All rights reserved</p>
       </div>
     </footer>
   );

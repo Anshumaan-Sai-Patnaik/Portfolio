@@ -1,0 +1,120 @@
+/* ========================================
+   AMBIENT BACKGROUND
+   ======================================== */
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ----------------------------------------
+   AURAS — warm gradient pools
+
+   The outer layer is oversized so the JS scroll parallax never drags an
+   edge into view; the inner span carries its own slow idle drift, so the
+   two motions compose without fighting over one transform.
+   ---------------------------------------- */
+
+.bg__aura {
+  position: absolute;
+  inset: -30% -10%;
+  will-change: transform;
+}
+
+.bg__aura span {
+  position: absolute;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 50%;
+}
+
+.bg__aura--sand span {
+  top: 8%;
+  left: -12%;
+  width: min(58vw, 760px);
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(224, 203, 173, 0.55),
+    rgba(224, 203, 173, 0) 65%
+  );
+  animation: aura-drift-a 26s ease-in-out infinite alternate;
+}
+
+.bg__aura--clay span {
+  top: 36%;
+  right: -14%;
+  width: min(52vw, 680px);
+  background: radial-gradient(
+    circle at 60% 40%,
+    rgba(207, 177, 152, 0.42),
+    rgba(207, 177, 152, 0) 65%
+  );
+  animation: aura-drift-b 32s ease-in-out infinite alternate;
+}
+
+.bg__aura--haze span {
+  bottom: 4%;
+  left: 24%;
+  width: min(48vw, 620px);
+  background: radial-gradient(
+    circle at 50% 55%,
+    rgba(184, 172, 156, 0.3),
+    rgba(184, 172, 156, 0) 68%
+  );
+  animation: aura-drift-c 38s ease-in-out infinite alternate;
+}
+
+@keyframes aura-drift-a {
+  to {
+    transform: translate3d(4vw, 3vh, 0) scale(1.08);
+  }
+}
+
+@keyframes aura-drift-b {
+  to {
+    transform: translate3d(-3vw, 4vh, 0) scale(0.94);
+  }
+}
+
+@keyframes aura-drift-c {
+  to {
+    transform: translate3d(3vw, -3vh, 0) scale(1.06);
+  }
+}
+
+/* ----------------------------------------
+   DOT GRID — echoes the hairline dividers
+   ---------------------------------------- */
+
+.bg__grid {
+  position: absolute;
+  inset: -15% 0;
+  background-image: radial-gradient(rgba(26, 26, 26, 0.055) 1px, transparent 1.5px);
+  background-size: 28px 28px;
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 42%, #000 25%, transparent 100%);
+  mask-image: radial-gradient(120% 90% at 50% 42%, #000 25%, transparent 100%);
+  will-change: transform;
+}
+
+/* ----------------------------------------
+   GRAIN — fine film texture over everything
+   ---------------------------------------- */
+
+.bg__grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+}
+
+/* ---- Motion-safety ---- */
+@media (prefers-reduced-motion: reduce) {
+
+  .bg__aura span {
+    animation: none;
+  }
+}
